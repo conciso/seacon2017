@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.github.conciso.conferences.seacon2017</groupId>
+    <artifactId>federated</artifactId>
+    <version>0.1.0-SNAPSHOT</version>
+
+    <name>SEACON 2017 : Demo Federated Authentication</name>
+    <description>SEACON 2017 - Demo - Federated Authentication</description>
+
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <version.resteasy>3.0.14.Final</version.resteasy>
+        <version.wildfly.swarm>2017.5.0</version.wildfly.swarm>
+    </properties>
+
+    <packaging>war</packaging>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.0.0</version>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.wildfly.swarm</groupId>
+                <artifactId>wildfly-swarm-plugin</artifactId>
+                <version>${version.wildfly.swarm}</version>
+                <configuration>
+                    <mainClass>com.github.conciso.conferences.seacon2017.demo.Main</mainClass>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>package</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.20.0</version>
+                <configuration>
+                    <images>
+                        <image>
+                            <name>conciso/seacon2017-federated</name>
+                            <build>
+                                <entryPoint>["java", "-jar", "/federated-${project.version}-swarm.jar"]
+                                </entryPoint>
+                                <!--
+                                <from>fabric8/java-alpine-openjdk8-jdk:1.2.5</from>
+                                -->
+                                <from>openjdk:8u121-jdk</from>
+                                <ports>
+                                    <port>8080/tcp</port>
+                                </ports>
+                                <tags>
+                                    <tag>latest</tag>
+                                    <tag>${project.version}</tag>
+                                </tags>
+                                <assembly>
+                                    <basedir>/</basedir>
+                                    <inline>
+                                        <files>
+                                            <file>
+                                                <source>
+                                                    ${project.build.directory}${file.separator}federated-${project.version}-swarm.jar
+                                                </source>
+                                                <outputDirectory>.</outputDirectory>
+                                            </file>
+                                        </files>
+                                    </inline>
+                                </assembly>
+                            </build>
+                        </image>
+                    </images>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>build</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>sources</id>
+                        <goals>
+                            <goal>source</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>io.gatling</groupId>
+                <artifactId>gatling-maven-plugin</artifactId>
+                <version>2.2.1</version>
+                <configuration>
+                    <simulationClass>performance</simulationClass>
+                    <failOnError>false</failOnError>
+                    <propagateSystemProperties>true</propagateSystemProperties>
+                    <failOnError>true</failOnError>
+                </configuration>
+            </plugin>
+        </plugins>
+
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.wildfly.swarm</groupId>
+            <artifactId>jaxrs</artifactId>
+            <version>${version.wildfly.swarm}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.wildfly.swarm</groupId>
+            <artifactId>cdi</artifactId>
+            <version>${version.wildfly.swarm}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.wildfly.swarm</groupId>
+            <artifactId>keycloak</artifactId>
+            <version>${version.wildfly.swarm}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.keycloak</groupId>
+            <artifactId>keycloak-undertow-adapter</artifactId>
+            <version>3.0.0.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5</version>
+        </dependency>
+        <dependency>
+            <groupId>io.gatling.highcharts</groupId>
+            <artifactId>gatling-charts-highcharts</artifactId>
+            <version>2.2.3</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+</project>
+

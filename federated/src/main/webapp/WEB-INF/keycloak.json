@@ -1,0 +1,10 @@
+{
+  "realm": "keycloak-example",
+  "realm-public-key" : "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAkbwLYvW2D9ijQw2iwnYotqQw0+13aNjJZ9SARxCYCMHYrFKRKQOStuwXOsWEMyLp+I1hmIph7hqwLDkwlYomzjKRS6iLOMh77HF7fv9MwmFtWC2qa5TehZWeHRdiNYVTD9XZvf+Zsx8vNV9O83Wl+ETXMVIvlW9LjPBmfHwUYOPgkvmsDEfqHecejVKelnH8q0hVO46ruaoY4gQyuOI08dgSPu0eH26V3UzC2W9tEVXAhG1m0qwSN4zyvPjNA3TlQIooI1FPIhc2cjZam1xuEf9Jx+qKIWetuty9oX8CAXZt2JYlAX9JuD/ddVSqEDuPaIuz2D1GmhAzrCGIqtCdqwIDAQAB",
+  "bearer-only": true,
+  "public-client": true,
+  "use-resource-role-mappings": true,
+  "auth-server-url": "http://localhost:9080/auth",
+  "ssl-required": "external",
+  "resource": "keycloak-example"
+}
