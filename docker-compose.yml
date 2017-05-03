@@ -1,0 +1,65 @@
+version: '3'
+
+services:
+
+  integrated:
+    image: conciso/seacon2017-integrated
+    container_name: integrated
+    ports:
+    - "8081:8080"
+
+  federated:
+    image: conciso/seacon2017-federated
+    container_name: federated
+    ports:
+    - "8082:8080"
+    
+  keycloak:
+    image: jboss/keycloak:3.0.0.Final
+    container_name: keycloak
+    volumes:
+    - ./keycloak:/tmp/realm
+    ports:
+    - "9080:8080"
+    links:
+     - haproxy:haproxy
+    command: -b 0.0.0.0 -Dkeycloak.migration.action=import -Dkeycloak.migration.provider=singleFile -Dkeycloak.migration.file=/tmp/realm/realm.json
+
+  haproxy:
+    image: haproxy:1.7.5
+    container_name: haproxy
+    volumes:
+    - ./haproxy:/usr/local/etc/haproxy
+    links:
+    - openldap:openldap
+    ports:
+    - "1936:1936"
+    - "389:389"
+
+  openldap:
+    image: osixia/openldap:1.1.8
+    container_name: openldap
+    volumes:
+    - ./openldap/database:/var/lib/ldap
+    - ./openldap/config:/etc/ldap/slapd.d
+
+
+
+
+
+
+
+
+
+
+
+  phpldapadmin:
+    image: osixia/phpldapadmin:latest
+    container_name: phpldapadmin
+    environment:
+      PHPLDAPADMIN_LDAP_HOSTS: "openldap"
+      PHPLDAPADMIN_HTTPS: "false"
+    ports:
+      - "10080:80"
+    links:
+      - openldap:openldap
