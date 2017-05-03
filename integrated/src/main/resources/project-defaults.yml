@@ -1,0 +1,32 @@
+swarm:
+  deployment:
+    seacon2017-demo.war:
+      web:
+        login-config:
+          auth-method: BASIC
+          security-domain: my-domain
+        security-constraints:
+          - url-pattern: /*
+            methods: [GET]
+            roles: [speaker]
+  security:
+    security-domains:
+      my-domain:
+        classic-authentication:
+          login-modules:
+            Ldap:
+              code: Ldap
+              flag: required
+              module-options:
+                java.naming.factory.initial: com.sun.jndi.ldap.LdapCtxFactory
+                java.naming.provider.url: ldap://haproxy:389/
+                java.naming.security.authentication: simple
+                java.naming.security.principal: cn=admin,dc=example,dc=org
+                java.naming.security.credentials: admin
+                principalDNPrefix: uid=
+                principalDNSuffix: ",dc=example,dc=org"
+                rolesCtxDN: ou=Roles,dc=example,dc=org
+                uidAttributeID: member
+                matchOnUserDN: true
+                roleAttributeID: cn
+                roleAttributeIsDN: false
