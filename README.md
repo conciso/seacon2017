@@ -4,11 +4,15 @@ Hier stellen wir die Sourcen zur Demo vom Vortrag ["Föderation statt Integratio
 
 ## Demo starten und stoppen
 
-**Starten***
-```docker-compose up```
+**Starten**
+```bash
+docker-compose up
+```
 
-**Stoppen***
-```docker-compose down```
+**Stoppen**
+```bash
+docker-compose down
+```
 
 ## Integrierte Authentifizierung
 
@@ -36,14 +40,14 @@ mvn gatling:execute
 
 **Benutzername und Passwort setzen**
 ```bash
-set USER=seacon
-set PASS=seacon
+USER=seacon
+PASS=seacon
 ```
 
 **Authentifizieren und Token holen**
 ```bash
-set RESULT=`curl -s --data "grant_type=password&client_id=keycloak-example&username=${USER}&password=${PASS}" http://localhost:9080/auth/realms/keycloak-example/protocol/openid-connect/token`
-set TOKEN=`echo $RESULT | sed 's/.*access_token":"//g' | sed 's/".*//g'`
+RESULT=`curl -s --data "grant_type=password&client_id=keycloak-example&username=${USER}&password=${PASS}" http://localhost:9080/auth/realms/keycloak-example/protocol/openid-connect/token`
+TOKEN=`echo $RESULT | sed 's/.*access_token":"//g' | sed 's/".*//g'`
 ````
 
 **Service anfragen**
@@ -58,11 +62,20 @@ cd federated
 mvn gatling:execute
 ```
 
-## Statistiken anschauen
+## Statistiken
+
+**anschauen**
 
 [http://localhost:1936/](http://localhost:1936/)
 * Benutzername: admin
 * Passwort: admin
+
+**Zurücksetzen**
+
+Docker Container neu starten:
+```bash
+docker restart haproxy
+```
 
 ## Keycloak Admin Console
 
