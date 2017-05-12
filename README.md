@@ -2,6 +2,9 @@
 
 Hier stellen wir die Sourcen zur Demo vom Vortrag ["Föderation statt Integration - Skalierbare IAM-Anbindung"](https://conciso.de/event/seacon-2017/) unseres Kollegen [Sven-Torben Janus](https://github.com/sventorben) auf der [SEACON 2017](http://www.sea-con.de/seacon2017.html) zur Verfügung.
 
+## Folien
+Die Vortragsfolien finden sich [hier](http://www.sigs.de/download/seacon_2017/files/Fr11_Janus_Foederation-statt-Integration.pdf).
+
 ## Demo starten und stoppen
 
 **Starten**
@@ -18,7 +21,7 @@ docker-compose down
 
 * Benutzername: seacon
 * Passwort: seacon
-* Basic Auth Bas64: c2VhY29uOnNlYWNvbg==
+* Basic Auth Base64: c2VhY29uOnNlYWNvbg==
 
 ### einzelne Anfrage
 
