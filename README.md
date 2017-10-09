@@ -26,7 +26,9 @@ docker-compose down
 ### einzelne Anfrage
 
 ```
-HASH=c2VhY29uOnNlYWNvbg==
+USER=seacon
+PASS=seacon
+HASH=`echo -n $USER:$PASS | base64`
 curl -H "Authorization: Basic $HASH" localhost:8081/red
 ```
 
