@@ -19,7 +19,7 @@ swarm:
               flag: required
               module-options:
                 java.naming.factory.initial: com.sun.jndi.ldap.LdapCtxFactory
-                java.naming.provider.url: ldap://haproxy:389/
+                java.naming.provider.url: ldap://ldap:389/
                 java.naming.security.authentication: simple
                 java.naming.security.principal: cn=admin,dc=example,dc=org
                 java.naming.security.credentials: admin

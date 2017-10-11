@@ -2981,7 +2981,7 @@
         "rdnLDAPAttribute" : [ "uid" ],
         "vendor" : [ "other" ],
         "uuidLDAPAttribute" : [ "entryUUID" ],
-        "connectionUrl" : [ "ldap://haproxy:389" ],
+        "connectionUrl" : [ "ldap://ldap:389" ],
         "allowKerberosAuthentication" : [ "false" ],
         "syncRegistrations" : [ "false" ],
         "authType" : [ "simple" ],

@@ -1,0 +1,5 @@
+[{
+  "name": "openldap",
+  "listen": "toxiproxy:389",
+  "upstream": "openldap:389"
+}]

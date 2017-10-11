@@ -8,7 +8,7 @@ services:
     ports:
     - "8081:8080"
     links:
-    - haproxy:ldap
+    - toxiproxy:ldap
 
   federated:
     image: conciso/seacon2017-federated
@@ -20,30 +20,30 @@ services:
     image: jboss/keycloak:3.0.0.Final
     container_name: keycloak
     volumes:
-    - ./keycloak:/tmp/realm
+    - ../keycloak:/tmp/realm:ro
     ports:
     - "9080:8080"
     links:
-     - haproxy:ldap
+     - toxiproxy:ldap
     command: -b 0.0.0.0 -Dkeycloak.migration.action=import -Dkeycloak.migration.provider=singleFile -Dkeycloak.migration.file=/tmp/realm/realm.json
 
-  haproxy:
-    image: haproxy:1.7.5
-    container_name: haproxy
-    volumes:
-    - ./haproxy:/usr/local/etc/haproxy
+  toxiproxy:
+    image: shopify/toxiproxy:2.1.0
+    container_name: toxiproxy
     links:
     - openldap:openldap
     ports:
-    - "1936:1936"
-    - "389:389"
+    - "8474:8474"
+    volumes:
+    - ./:/config:ro
+    command: -config /config/proxies.json -host toxiproxy
 
   openldap:
     image: osixia/openldap:1.1.8
     container_name: openldap
     volumes:
-    - ./openldap/database:/var/lib/ldap
-    - ./openldap/config:/etc/ldap/slapd.d
+    - ../openldap/database:/var/lib/ldap
+    - ../openldap/config:/etc/ldap/slapd.d
 
 
 

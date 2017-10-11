@@ -22,11 +22,11 @@ class performance extends Simulation {
   val login =
     exec(http("Login")
       .post(TOKEN_URL)
+      .silent
       .formParamMap(Map(
         "username" -> USER,
         "password" -> PASS,
         "client_id" -> "keycloak-example",
-        "client_secret" -> "b4ef589e-b369-419c-aa99-fe48e521a373",
         "grant_type" -> "password"
       ))
       .check(jsonPath("$.access_token").saveAs("accessToken")))
@@ -38,12 +38,8 @@ class performance extends Simulation {
 
 
   val scn = scenario("Login and call Green")
-    .repeat(1) {
-      exec(login)
-    }
-    .repeat(10) {
-      exec(request)
-    }
+        .exec(login)
+        .exec(request)
 
-  setUp(scn.inject(rampUsers(1) over 1)).protocols(httpProtocol)
+  setUp(scn.inject(rampUsers(10) over 1)).protocols(httpProtocol)
 }

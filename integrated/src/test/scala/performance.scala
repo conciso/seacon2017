@@ -25,10 +25,7 @@ class performance extends Simulation {
         .get(GREEN_URL)
         .header("Authorization", "Basic " + userPassBase64))
 
-  val scn = scenario("Call Green")
-    .repeat(10) {
-      exec(request)
-    }
+  val scn = scenario("Call Green").exec(request)
 
-  setUp(scn.inject(rampUsers(1) over 1)).protocols(httpProtocol)
+  setUp(scn.inject(rampUsers(10) over 1)).protocols(httpProtocol)
 }
